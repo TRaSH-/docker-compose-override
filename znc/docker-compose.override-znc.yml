@@ -1,0 +1,17 @@
+    # DockSTARTer override file for ZNC.
+    # please check the developer site for full setup and config => https://hub.docker.com/r/linuxserver/znc
+    # This override makes use of the .env file located in the same location where your override should be.
+    image: linuxserver/znc
+    container_name: znc
+    restart: unless-stopped
+    environment:
+      - PGID=${PGID}
+      - PUID=${PUID}
+      - TZ=${TZ}
+    ports:
+      - "${ZNC_PORT_6501}:6501"
+    volumes:
+      - /etc/localtime:/etc/localtime:ro
+      - ${DOCKERCONFDIR}/znc:/config
+      - ${DOCKERSHAREDDIR}:/shared
+      
