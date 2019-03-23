@@ -1,0 +1,7 @@
+#automysqlbackup
+AMYSQLB_USER=automysqlbackup
+AMYSQLB_PASSWORD=automysqlbackup
+AMYSQLB_DBEXCLUDE=performance_schema information_schema
+AMYSQLB_DOWEEKLY=1
+AMYSQLB_LATEST=yes
+AMYSQLB_CRON_SCHEDULE=0 0 * * *

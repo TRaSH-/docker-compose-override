@@ -1,0 +1,26 @@
+# DockSTARTer override file for automysqlbackup.
+# please check the developer site for full setup and config => https://hub.docker.com/r/selim13/automysqlbackup
+# This override makes use of the .env file located in the same location where your override should be.
+  automysqlbackup:
+    image: selim13/automysqlbackup:latest
+    container_name: automysqlbackup
+    restart: unless-stopped
+    environment:
+      - PGID=${PGID}
+      - PUID=${PUID}
+      - TZ=${TZ}
+      - USERNAME=${AMYSQLB_USER}
+      - PASSWORD=${AMYSQLB_PASSWORD}
+      - DBHOST=mariadb
+      - DBPORT=${MARIADB_PORT_3306}
+      - DOWEEKLY=${AMYSQLB_DOWEEKLY}
+      - LATEST=${AMYSQLB_LATEST}
+      - DBEXCLUDE=${AMYSQLB_DBEXCLUDE}
+      - CRON_SCHEDULE=${AMYSQLB_CRON_SCHEDULE}
+    volumes:
+      - ${DOCKERCONFDIR}/automysqlbackup:/backup
+      - /etc/localtime:/etc/localtime:ro
+      - /var/run/docker.sock:/var/run/docker.sock
+    depends_on:
+      - mariadb
+      
