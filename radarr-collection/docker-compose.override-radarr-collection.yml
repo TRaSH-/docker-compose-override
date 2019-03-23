@@ -1,0 +1,14 @@
+# DockSTARTer override file for radarr-collection.
+# please check the developer site for full setup and config => https://github.com/RhinoRhys/radarr-collections
+# It's set to "Disabled automatic adding to Radarr, instead saves list of missing movies to text file." "args=-c"
+# This container should run once and stop after it that's why there's no "restart" command !!!
+  radarr-collections:
+    image: si0972/radarr-collections
+    container_name: radarr-collections
+    environment:
+      - PGID=${PGID}
+      - PUID=${PUID}
+      - TZ=${TZ}
+      - args=-c
+    volumes:
+      - ${DOCKERCONFDIR}/radarr-collection:/config

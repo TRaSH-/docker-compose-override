@@ -1,2 +1,4 @@
-# docker-compose-override
-Collection of override files for DockSTARTer
+# Docker compose override
+
+Collection of override files that you can use for DockSTARTer.
+
