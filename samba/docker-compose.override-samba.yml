@@ -6,13 +6,13 @@
 # This will make it possible to access the following folders backup, compose(.env+docker-compose.override.yml), appdata
 # after enabling in DockSTARTer you need to edit the samba settings in the .env
 # changed network_mode to "host" or else it wouldn't show up in my network.
-# NOTE: change "username" to your username used on your system line 15,23,24,25
-# NOTE: change the "WORKGROUP" to your workgroup name line 17
+# NOTE: don't forget to edit in the .env your SAMBA_USERNAME and SAMBA_PASSWORD !!!
+# NOTE: change the "WORKGROUP" to your workgroup name line 17 otherwise it won't show up in your network !!!
   samba:
     network_mode: "host"
     command:
       -u "${SAMBA_USERNAME};${SAMBA_PASSWORD}"
-      -s "DockSTARTer;/username/;yes;no;yes;all;${SAMBA_USERNAME}"
+      -s "${DOCKERHOSTNAME};/${DOCKERHOSTNAME}/;yes;no;yes;all;${SAMBA_USERNAME}"
     environment:
       - WORKGROUP=WORKGROUP
       - NMBD=true
@@ -20,7 +20,7 @@
       - 137:137/udp
       - 138:138/udp
     volumes:
-      - ${BACKUP_CONFDIR}:/username/backup
-      - ${DOCKERCONFDIR}:/username/docker/config
-      - /home/username/.docker/compose:/username/compose
+      - ${BACKUP_CONFDIR}:/${DOCKERHOSTNAME}/backup
+      - ${DOCKERCONFDIR}:/${DOCKERHOSTNAME}/appdata
+      - ~/.docker/compose:/${DOCKERHOSTNAME}/compose
       - ${DOCKERCONFDIR}/samba:/etc/samba
