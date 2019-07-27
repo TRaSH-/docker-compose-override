@@ -3,7 +3,7 @@
 # This override makes use of the .env file located in the same location where your override should be.
 #
 # I made this override so I could as window user edit/view config files and logs.
-# This will make it possible to access the following folders backup, compose, .docker
+# This will make it possible to access the following folders backup, compose(.env+docker-compose.override.yml), appdata
 # after enabling in DockSTARTer you need to edit the samba settings in the .env
 # changed network_mode to "host" or else it wouldn't show up in my network.
 # NOTE: change "username" to your username used on your system line 15,23,24,25
