@@ -5,22 +5,39 @@
 # I made this override so I could as window user edit/view config files and logs.
 # This will make it possible to access the following folders backup, compose(.env+docker-compose.override.yml), appdata
 # after enabling in DockSTARTer you need to edit the samba settings in the .env
-# changed network_mode to "host" or else it wouldn't show up in my network.
 # NOTE: don't forget to edit in the .env your SAMBA_USERNAME and SAMBA_PASSWORD !!!
 # NOTE: change the "WORKGROUP" to your workgroup name line 17 otherwise it won't show up in your network !!!
+
   samba:
     network_mode: "host"
     command:
       -u "${SAMBA_USERNAME};${SAMBA_PASSWORD}"
       -s "${DOCKERHOSTNAME};/${DOCKERHOSTNAME}/;yes;no;yes;all;${SAMBA_USERNAME}"
+    container_name: samba
     environment:
-      - WORKGROUP=WORKGROUP
-      - NMBD=true
+    - GROUPID=${PGID}
+    - USERID=${PUID}
+    - TZ=${TZ}
+    - WORKGROUP=WORKGROUP
+    - NMBD=true
+    hostname: ${DOCKERHOSTNAME}
+    image: dperson/samba
+    logging:
+      driver: json-file
+      options:
+        max-file: ${DOCKERLOGGING_MAXFILE}
+        max-size: ${DOCKERLOGGING_MAXSIZE}
     ports:
-      - 137:137/udp
-      - 138:138/udp
+    - 137:137/udp
+    - 138:138/udp
+    - 445:445/tcp
+    - 445:445/udp
+    restart: unless-stopped
     volumes:
-      - ${BACKUP_CONFDIR}:/${DOCKERHOSTNAME}/backup
-      - ${DOCKERCONFDIR}:/${DOCKERHOSTNAME}/appdata
-      - ~/.docker/compose:/${DOCKERHOSTNAME}/compose
-      - ${DOCKERCONFDIR}/samba:/etc/samba
+    - /etc/localtime:/etc/localtime:ro
+    - ${DOCKERCONFDIR}/samba:/config
+    - ${DOCKERCONFDIR}/samba:/etc/samba
+    - ${BACKUP_CONFDIR}:/${DOCKERHOSTNAME}/backup
+    - ${DOCKERCONFDIR}:/${DOCKERHOSTNAME}/appdata
+    - ~/.docker/compose:/${DOCKERHOSTNAME}/compose
+    
